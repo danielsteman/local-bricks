@@ -1,4 +1,4 @@
-# dbr-serverless-connect
+# local-bricks
 
 Experimental tools with databricks serverless sessions for local development of code that should run on databricks.
 
