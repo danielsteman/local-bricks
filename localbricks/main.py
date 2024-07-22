@@ -7,7 +7,7 @@ dbutils = None
 
 
 def set_widget_values(
-    dbutils, config_path: str = ".databricks.local", namespace: str = "default"
+    dbutils, config_path: str = ".databricks_local.yaml", namespace: str = "default"
 ) -> None:
     with open(config_path, "r") as file:
         data = yaml.safe_load(file)

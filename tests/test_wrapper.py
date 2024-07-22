@@ -1,7 +1,7 @@
 from localbricks import dbutils, spark
 
 
-def test_from_import():
+def test_wrapper():
     assert dbutils is not None, "dbutils should be initialized"
     assert spark is not None, "spark should be initialized"
     assert dbutils.widgets.get("pasta") == "rigatone", "config should be readable"

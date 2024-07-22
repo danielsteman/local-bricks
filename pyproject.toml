@@ -25,3 +25,8 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["localbricks"]
+
+exclude = [
+    "tests",
+    ".databricks.local"
+]

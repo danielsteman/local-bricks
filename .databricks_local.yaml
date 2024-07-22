@@ -1,2 +1,4 @@
 default:
   pasta: rigatone
+dev:
+  pasta: penne

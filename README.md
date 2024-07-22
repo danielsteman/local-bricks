@@ -4,7 +4,7 @@ Experimental tools with databricks serverless sessions for local development of 
 
 ## Local config
 
-`./.databricks.local` is the default config file path and expects a `default` namespace.
+`./.databricks_local.yaml` is the default config file path and expects a `default` namespace. This can't be changed at the moment.
 
 ```yaml
 default:
