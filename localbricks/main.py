@@ -1,4 +1,5 @@
 import yaml
+import builtins
 
 
 def set_widget_values(
@@ -42,10 +43,5 @@ def initialize_spark_and_dbutils():
         except ImportError:
             print("WorkspaceClient is not available. Install `databricks-sdk`.")
 
-
-# initialize_spark_and_dbutils()
-# print(dbutils.widgets.get("pasta"))
-# print(spark.table("system.compute.node_types").count())
-
-# dbutils.widgets.text("HOI", "HAI")
-# print(dbutils.widgets.get("HOI"))
+    builtins.spark = spark
+    builtins.dbutils = dbutils
