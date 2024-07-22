@@ -1,6 +1,6 @@
 # dbr-serverless-connect
 
-Describe your project here.
+Experimental tools with databricks serverless sessions for local development of code that should run on databricks.
 
 ## Local config
 
