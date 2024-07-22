@@ -1,33 +1,16 @@
 import yaml
-from abc import ABC, abstractmethod
-from typing import Any, Optional
-import os
 
 
-class WidgetHandler(ABC):
-    @abstractmethod
-    def get(self, key: str) -> Optional[Any]:
-        pass
-
-
-class EnvVarWidgetHandler(WidgetHandler):
-    def get(self, key) -> Optional[str]:
-        return os.environ.get(key)
-
-
-class DBUtilsHandler:
-    def __init__(self, widget_handler: WidgetHandler):
-        self.widgets = widget_handler()
-
-
-def set_widget_values(config_path: str = ".databricks.local"):
-    project_root = os.path.dirname(os.path.abspath(__file__))
-
-    # Construct the full path to the YAML file
-    yaml_path = os.path.join(project_root, config_path)
-
-    with open(yaml_path, "r") as file:
+def set_widget_values(
+    dbutils, config_path: str = ".databricks.local", namespace: str = "default"
+) -> None:
+    with open(config_path, "r") as file:
         data = yaml.safe_load(file)
+
+    scoped_data = data.get(namespace, {})
+
+    for key, value in scoped_data.items():
+        dbutils.widgets.text(key, value)
 
 
 def initialize_spark_and_dbutils():
@@ -55,13 +38,14 @@ def initialize_spark_and_dbutils():
 
             w = WorkspaceClient()
             dbutils = w.dbutils
+            set_widget_values(dbutils)
         except ImportError:
             print("WorkspaceClient is not available. Install `databricks-sdk`.")
 
 
-initialize_spark_and_dbutils()
+# initialize_spark_and_dbutils()
+# print(dbutils.widgets.get("pasta"))
+# print(spark.table("system.compute.node_types").count())
 
-dbutils.widgets.text("HOI", "HAI")
-print(dbutils.widgets.get("HOI"))
-
-print(spark.table("system.access.audit").count())
+# dbutils.widgets.text("HOI", "HAI")
+# print(dbutils.widgets.get("HOI"))
