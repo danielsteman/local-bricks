@@ -16,5 +16,6 @@ These key values will be injected in `dbutils.widgets` so you can test parameter
 ```py
 initialize_spark_and_dbutils()
 dbutils.widgets.get("pasta")
+
 >>> 'rigatone'
 ```
