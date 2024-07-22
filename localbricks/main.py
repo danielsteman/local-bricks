@@ -1,5 +1,9 @@
 import yaml
-import builtins
+import os
+
+
+spark = None
+dbutils = None
 
 
 def set_widget_values(
@@ -18,30 +22,31 @@ def initialize_spark_and_dbutils():
     global spark
     global dbutils
 
-    if "spark" not in locals() and "spark" not in globals():
-        try:
-            from databricks.connect import DatabricksSession
+    running_in_databricks = bool(os.getenv("DATABRICKS_RUNTIME_VERSION"))
+    if running_in_databricks:
+        return
 
-            spark = DatabricksSession.builder.serverless().getOrCreate()
-        except ImportError:
-            print("DatabricksSession is not available. Initializing local Spark.")
-            from pyspark.sql import SparkSession
+    try:
+        from databricks.connect import DatabricksSession
 
-            spark = (
-                SparkSession.builder.master("local[*]")
-                .appName("LocalSpark")
-                .getOrCreate()
-            )
+        spark = DatabricksSession.builder.serverless().getOrCreate()
+    except ImportError:
+        print("DatabricksSession is not available. Initializing local Spark.")
+        from pyspark.sql import SparkSession
 
-    if "dbutils" not in locals() and "dbutils" not in globals():
-        try:
-            from databricks.sdk import WorkspaceClient
+        spark = (
+            SparkSession.builder.master("local[*]").appName("LocalSpark").getOrCreate()
+        )
 
-            w = WorkspaceClient()
-            dbutils = w.dbutils
-            set_widget_values(dbutils)
-        except ImportError:
-            print("WorkspaceClient is not available. Install `databricks-sdk`.")
+    try:
+        from databricks.sdk import WorkspaceClient
 
-    builtins.spark = spark
-    builtins.dbutils = dbutils
+        w = WorkspaceClient()
+        dbutils = w.dbutils
+        set_widget_values(dbutils)
+    except ImportError:
+        print("WorkspaceClient is not available. Install `databricks-sdk`.")
+
+
+if not bool(os.getenv("DATABRICKS_RUNTIME_VERSION")):
+    initialize_spark_and_dbutils()
