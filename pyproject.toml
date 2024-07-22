@@ -3,7 +3,7 @@ name = "dbr-serverless-connect"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
-    { name = "Daniel Steman", email = "daniel.steman@bridgefund.nl" }
+    { name = "Daniel Steman", email = "daniel-steman@live.nl" }
 ]
 dependencies = [
     "databricks-connect>=15.3.1",
